@@ -155,27 +155,110 @@ C도 나머지 영역에서 자리를 정해.
 
 ```python
 def is_safe(row, col):
-    # 여왕이 (row, col)에 앉을 수 있는지 검사
     for prev_row in range(row):
         if queens[prev_row] == col:
-            return False  # 같은 열이면 X
+            return False
         if abs(queens[prev_row] - col) == abs(prev_row - row):
-            return False  # 같은 대각선 X
+            return False
+    
     return True
 
-def solve[row]:
-    if row == N:  # 모든 여왕을 배치했으면
-        count[0] += 1
+def solve(row):
+    if row == N:
+        count += 1
+        print("해 발견:", queens)
         return
     
     for col in range(N):
         if is_safe(row, col):
-            queens[row] = col  # 여왕 배치
+            queens[row] = col  # 여왕 놓기
             solve(row + 1)
+            queens[row] -= 1  # 해당 행에서 놓기 실패했으니, 다시 되돌리고 다음 col로 가야하니까 !!
 
 N = 4
-queens = [-1] * N  # 각 행에 여왕이 있는 열 정보 저장
+queens = [-1] * N  # 각 행에 여왕의 열 위치 저장
 count = 0
 solve(0)
-print("해결 가능한 경우의 수 :", count)
+print("총 해답 수:", count)
 ```
+
+# 백트래킹 1
+
+```python
+N, M = map(int, input().split)
+arr = [0] * N
+visited = [0] * (N + 1)
+
+def solve(depth):
+    if depth == M:
+        print(*arr)
+        return
+    
+    for i in range(1, N + 1):
+        if visited[i] = 0:
+            visited[i] = 1
+            arr[depth] = i
+            solve(depth + 1)
+            visited[i] = 0
+```
+
+```python
+N, M = map(int, input().split())
+arr = [0] * M
+
+def solve(depth, start):
+    if depth == M:
+        print(*arr)
+        return
+    
+    for i in range(start, N + 1):
+        arr[depth] = i
+        solve(depth + 1, i + 1)
+
+solve(0, 1)
+```
+
+### 🎯 백트래킹 유형별 차이 비교표
+
+| 유형 (Type) | 함수 호출 방식 (Recursive Call) | 예시 출력 (`N=3`, `M=2`) |
+|-------------|-------------------------------|---------------------------|
+| 순열 (Permutation) | `solve(depth + 1)` + `visited` 사용 | `1 2`, `2 1`, `2 3`, `3 2`, ... |
+| 조합 (Combination) | `solve(depth + 1, i + 1)` | `1 2`, `1 3`, `2 3` |
+| 중복 조합 (Combination with Repetition) | `solve(depth + 1, i)` | `1 1`, `1 2`, `2 2`, `3 3` |
+
+```python
+arr = [1, 2, 3]
+N = len(arr)
+
+def solve(idx, subset):
+    if idx == N:
+        print(subset)
+        return
+    
+    solve(idx + 1, subset + [arr[idx]])
+    sove(idx + 1, subset)
+```
+
+```python
+coins = [500, 100, 50, 10]
+change = 1260
+count = 0
+
+for coin in coins:
+    count += change//coin
+    change %= coin
+```
+
+```python
+meetings.sort(key=lambda x: x[1])
+end_time = 0
+count = 0
+
+for s, e in meetings:
+    if s >= end_time:
+        count += 1
+        end_time = e
+```
+
+완전검색_그리디2
+이어서.. 복합문제..
